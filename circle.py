@@ -8,9 +8,10 @@ import thread
 
 from lib import dac
 from lib.common import *
-from lib.stream import *
+from lib.stream import PointStream
 from lib.entity import Entity
 from lib.point import *
+from lib.frame import *
 from lib.wrap import Wrap
 
 IPAddrs = {
@@ -21,20 +22,43 @@ IPAddrs = {
 class Circle(Entity):
 	def __init__(self, samplePts=100, radius=1000):
 		super(Circle, self).__init__()
+
+		self.direc = 1 # XXX TEMPORARY 
+
 		for i in range(0, samplePts):
 			i = float(i) / samplePts * 2 * math.pi
 			x = int(math.cos(i) * radius)
 			y = int(math.sin(i) * radius)
 			self.points.append(Point(x, y))
 
-def dac_thread(ip):
+dacs = {}
+dacs['china'] = dac.DAC(IPAddrs['china'])
+dacs['usa']	  = dac.DAC(IPAddrs['usa'])
+
+entities = []
+entities.append(Circle())
+entities.append(Circle())
+
+entities[0].x = 10000
+entities[0].y = 10000
+entities[0].laserKey = 'china'
+entities[1].laserKey = 'usa'
+
+frame = LogicalFrame()
+frame.add(entities[0])
+frame.add(entities[1])
+
+def set_frame(frame):
+	frame.freeze()
+	for d in dacs.values():
+		d.stream.setNextFrame(frame)
+
+def dac_thread(key):
+	d = dacs[key]
+	d.stream = PointStream()
 	while True:
 		try:
-			print 'Dac for %s' % ip
-			d = dac.DAC(ip)
-			ps = PointStream()
-			ps.objects.append(Wrap(Circle()))
-			d.play_stream(ps)
+			d.play_stream(d.stream)
 
 		except KeyboardInterrupt:
 			sys.exit()
@@ -47,8 +71,37 @@ def dac_thread(ip):
 			traceback.print_tb(sys.exc_info()[2])
 			print "\n"
 
-thread.start_new_thread(dac_thread, (IPAddrs['china'],))
-thread.start_new_thread(dac_thread, (IPAddrs['usa'],))
+def game_thread():
+	while True:
+		try:
+			frame = LogicalFrame()
+
+			# "Game movement", or whatever
+			for e in entities:
+				e.x += (10 * e.direc)
+				if e.x > 5000:
+					e.x = 5000
+					e.direc = -1
+				elif e.x < -5000:
+					e.x = -5000
+					e.direc = 1
+
+				frame.add(e)
+
+			set_frame(frame)
+
+		except:
+			import sys, traceback
+			print '\n---------------------'
+			print 'Exception: %s' % e
+			print '- - - - - - - - - - -'
+			traceback.print_tb(sys.exc_info()[2])
+			print "\n"
+
+
+thread.start_new_thread(dac_thread, ('china',))
+thread.start_new_thread(dac_thread, ('usa',))
+thread.start_new_thread(game_thread, ())
 
 while True:
 	time.sleep(100000)

@@ -50,6 +50,13 @@ class PointStream(object):
 		self.trackingSamplePts = TRACKING_SAMPLE_PTS
 		self.blankingSamplePts = BLANKING_SAMPLE_PTS
 
+		# Frame system
+		self.frame = None
+		self.nextFrame = None
+
+	def setNextFrame(self, frame):
+		self.nextFrame = frame
+
 	def transform(self, point):
 		"""
 		Returns global SRT transformations on points.
@@ -89,6 +96,32 @@ class PointStream(object):
 		return (int(x), int(y), r, g, b)
 
 	def produce(self):
+		"""
+		This infinite loop functions as an infinite point
+		generator. It generates points for objects as
+		well as the "tracking" and "blanking" points
+		that must occur between object draws.
+		"""
+		while True:
+			try:
+				if self.nextFrame:
+					self.frame = self.nextFrame
+
+				frame = self.frame
+
+				if not frame:
+					yield (0, 0, 0, 0, 0)
+					continue
+
+				for pt in frame.ptBuf:
+					yield pt
+
+			except Exception as e:
+				print "PointStream.produce() exception."
+				print e
+				pass
+
+	def produceOld(self):
 		"""
 		This infinite loop functions as an infinite point
 		generator. It generates points for objects as
