@@ -1,0 +1,7 @@
+# Temp files, dotfiles, config, tooling, etc
+.git/
+.gitignore
+.dropbox
+*pyc
+*~
+
