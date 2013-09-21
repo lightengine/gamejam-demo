@@ -21,6 +21,10 @@ class Entity(object):
 		self.eid = Entity._ENTITY_ID_COUNTER
 		Entity._ENTITY_ID_COUNTER += 1
 
+		# Which Laser/DAC are we assigned to?
+		# If not set, the algo will decide how to distribute.
+		self.laserKey = None
+
 	def produce(self):
 		for i in range(len(self.points)):
 			yield self.points[i]

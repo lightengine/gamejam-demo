@@ -10,10 +10,6 @@ class Wrap(Shape):
 		super(Wrap, self).__init__()
 		self.entity = entity
 
-		# An array of converted and cached pos/color 5-tuples 
-		# These are converted from Points
-		# self.ptBuf = []
-
 	def produce(self):
 		for i in xrange(len(self.entity.points)):
 			point = self.entity.points[i]
