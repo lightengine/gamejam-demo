@@ -20,7 +20,7 @@ from entities.circle import Circle
 from entities.square import Square
 
 IPAddrs = {
-	'china':	'169.254.156.114',
+	'china':	'169.254.156.112',
 	'usa':		'169.254.97.11',
 }
 
@@ -29,22 +29,24 @@ dacs['china'] = dac.DAC(IPAddrs['china'])
 dacs['usa']	  = dac.DAC(IPAddrs['usa'])
 
 distortions = {}
-distortions['china'] = Distortion(5560, -6250, 0.75, 0.75)
-distortions['usa'] = Distortion(-5560, 6500)
+distortions['china'] = Distortion(5000, -6600, 0.75, 0.75)
+distortions['usa'] = Distortion(-5000, 6600)
 
 frame = LogicalFrame()
 
 entities = []
 entities.append(Circle())
 entities.append(Circle())
-#entities.append(Circle())
-#entities.append(Circle())
+entities.append(Circle())
+entities.append(Circle())
 
 for i in range(len(entities)):
 	entity = entities[i]
 	entity.laserKey = 'china' if i%2 == 0 else 'usa'
 	#entity.x = random.randint(-5000, 5000)
 	#entity.y = random.randint(-5000, 5000)
+	entity.x = 0
+	entity.y = 0
 	frame.add(entity)
 
 def set_frame(frame):
@@ -91,12 +93,12 @@ def game_thread():
 
 			# "Game movement", or whatever
 			for e in entities:
-				e.x += (1 * e.direc)
-				if e.x > 5000:
-					e.x = 5000
+				e.x += (10 * e.direc)
+				if e.x > 500:
+					e.x = 500
 					e.direc = -1
-				elif e.x < -5000:
-					e.x = -5000
+				elif e.x < -500:
+					e.x = -500
 					e.direc = 1
 
 				frame.add(e)

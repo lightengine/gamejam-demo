@@ -6,15 +6,16 @@ LOGICAL FRAME
 """
 
 from color import CMAX
+from entity_gfx import GfxEntity
 
 class LogicalFrame(object):
 	def __init__(self):
 		self.entities = []
+		self.gfxEntities = []
 		self.frozen = False
 
-		# An array of converted and cached pos/color 5-tuples 
-		# These are converted from Points
-		self.ptBuf = []
+		# An array of copied Points
+		self.points = []
 
 		# Physically computed frames
 		# Indexed by `laserKey`:
@@ -39,7 +40,12 @@ class LogicalFrame(object):
 			if key not in self.physicalFrames:
 				self.physicalFrames[key] = PhysicalFrame()
 				self.physicalFrames[key].setDistortion(self.distortions[key])
-			self.physicalFrames[key].addEntity(entity)
+
+			gfxEntity = GfxEntity(entity)
+			gfxEntity.normalize()
+			self.gfxEntities.append(gfxEntity)
+
+			self.physicalFrames[key].addEntity(gfxEntity)
 
 		for physFrame in self.physicalFrames.values():
 			physFrame.calculate()
@@ -77,8 +83,8 @@ class PhysicalFrame(object):
 	def calculate(self):
 		for entity in self.entities:
 			for point in entity.points:
-				x = point.x + entity.x
-				y = point.y + entity.y
+				x = point.x
+				y = point.y
 
 				if self.distortion:
 					x *= self.distortion.scaleX
