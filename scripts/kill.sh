@@ -1,6 +1,5 @@
 #!/bin/bash 
 # Brandon Thomas <bt@brand.io>
-# Sync to the remote server
 
 # Sets the directory of the current script
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
@@ -28,22 +27,6 @@ function print_status() {
 	echo ''
 }
 
-function notify_complete() {
-	message=$1
-	notify-send -i /usr/share/icons/gnome/32x32/emotes/face-laugh.png \
-				-t 700 \
-				"Deploy" "$message"
-}
-
-##
-### Actual Deploy Scripting...
-####
-
-echo "Uploading to $USER@$HOST:$DIR_ROOT..."
-
-print_status '[rsync] All'
-rsync .  $USER@$HOST:$DIR_ROOT
-
-print_status 'Play script'
-ssh -n -f $USER@$HOST "sh -c 'python $DIR_ROOT/circle.py'"
+print_status 'Killall python'
+ssh -n -f $USER@$HOST "sh -c 'killall python'"
 
