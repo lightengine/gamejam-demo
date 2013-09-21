@@ -1,4 +1,7 @@
-
+"""
+I hate this function.
+I am sorry that it exists.
+"""
 
 def set_frame(frame, dacs, distortions):
 	frame.setDistortions(distortions)
@@ -6,11 +9,5 @@ def set_frame(frame, dacs, distortions):
 	for d in dacs.values():
 		if not d:
 			continue
-		d.stream.setNextFrame2(frame)
-
-	"""
-	for laserKey, d in dacs.iteritems():
-		physFrame = frame.getPhysical(laserKey)
-		d.stream.setNextPhysicalFrame(physFrame)
-	"""
+		d.stream.setNextFrame(frame)
 
