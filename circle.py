@@ -8,7 +8,7 @@ import itertools
 import sys
 
 LASER_POWER_DENOM = 1.0
-MAXRAD = 10260
+MAXRAD = 102600
 USERAD = int(MAXRAD/10)
 SAMPLE_PTS = 100 # 30 and below very damaging to galvos
 
