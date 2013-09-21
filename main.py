@@ -4,6 +4,7 @@ import time
 import math
 import itertools
 import sys
+import random
 import thread
 
 from lib import dac
@@ -26,18 +27,20 @@ dacs = {}
 dacs['china'] = dac.DAC(IPAddrs['china'])
 dacs['usa']	  = dac.DAC(IPAddrs['usa'])
 
+frame = LogicalFrame()
+
 entities = []
-entities.append(Square())
+entities.append(Circle())
+entities.append(Circle())
+entities.append(Circle())
 entities.append(Circle())
 
-entities[0].x = 10000
-entities[0].y = 10000
-entities[0].laserKey = 'china'
-entities[1].laserKey = 'usa'
-
-frame = LogicalFrame()
-frame.add(entities[0])
-frame.add(entities[1])
+for i in range(len(entities)):
+	entity = entities[i]
+	entity.laserKey = 'china' if i%2 == 0 else 'usa'
+	entity.x = random.randint(-5000, 5000)
+	entity.y = random.randint(-5000, 5000)
+	frame.add(entity)
 
 def set_frame(frame):
 	frame.freeze()
@@ -95,7 +98,6 @@ def game_thread():
 			print '- - - - - - - - - - -'
 			traceback.print_tb(sys.exc_info()[2])
 			print "\n"
-
 
 thread.start_new_thread(dac_thread, ('china',))
 thread.start_new_thread(dac_thread, ('usa',))
