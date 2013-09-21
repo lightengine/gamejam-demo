@@ -16,9 +16,6 @@ from lib.frame import *
 from lib.wrap import Wrap
 from lib.distortion import Distortion
 
-from entities.circle import Circle
-from entities.square import Square
-
 from game.main import *
 
 IPAddrs = {
@@ -35,33 +32,6 @@ distortions['china'] = Distortion(5000, -6600, 0.75, 0.75)
 distortions['usa'] = Distortion(-5000, 6600)
 
 frame = LogicalFrame()
-
-entities = []
-entities.append(Circle())
-entities.append(Circle())
-entities.append(Circle())
-entities.append(Circle())
-
-for i in range(len(entities)):
-	entity = entities[i]
-	entity.laserKey = 'china' if i%2 == 0 else 'usa'
-	#entity.x = random.randint(-5000, 5000)
-	#entity.y = random.randint(-5000, 5000)
-	entity.x = 0
-	entity.y = 0
-	frame.add(entity)
-
-def set_frame(frame):
-	frame.setDistortions(distortions)
-	frame.freeze()
-	for d in dacs.values():
-		d.stream.setNextFrame2(frame)
-
-	"""
-	for laserKey, d in dacs.iteritems():
-		physFrame = frame.getPhysical(laserKey)
-		d.stream.setNextPhysicalFrame(physFrame)
-	"""
 
 def dac_thread(key):
 	while True:
@@ -117,7 +87,8 @@ def game_thread():
 
 thread.start_new_thread(dac_thread, ('china',))
 thread.start_new_thread(dac_thread, ('usa',))
-thread.start_new_thread(update_thread, ())
+
+create_game_threads(dacs, distortions)
 
 while True:
 	time.sleep(100000)
