@@ -30,5 +30,4 @@ function print_status() {
 print_status 'Killall python'
 ssh -o "StrictHostKeyChecking no" $USER@$HOST << ENDHERE
 	killall python
-	exit
 ENDHERE

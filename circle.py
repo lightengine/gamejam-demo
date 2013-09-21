@@ -13,6 +13,7 @@ from lib.entity import Entity
 from lib.point import *
 from lib.wrap import Wrap
 
+
 IPAddrs = {
 	'china':	'169.254.156.114',
 	'usa':		'169.254.97.16',

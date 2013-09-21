@@ -13,16 +13,15 @@ module.exports = (grunt) ->
       deploy:
         options:
           stdout: true
-          execOptions:
-            timeout: 10000
+          stderr: true
         command: [
           '../kill.sh',
           '../deploy.sh',
           '../exec.sh'
-          ].join('&&')
+          ].join(';')
 
 
     grunt.loadNpmTasks 'grunt-shell'
     grunt.loadNpmTasks 'grunt-contrib-watch'
 
-    grunt.registerTask 'default', ['watch']
+    grunt.registerTask 'default', ['shell','watch']
