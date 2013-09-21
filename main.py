@@ -14,22 +14,13 @@ from lib.point import *
 from lib.frame import *
 from lib.wrap import Wrap
 
+from entities.circle import Circle
+from entities.square import Square
+
 IPAddrs = {
 	'china':	'169.254.156.114',
 	'usa':		'169.254.97.16',
 }
-
-class Circle(Entity):
-	def __init__(self, samplePts=100, radius=1000):
-		super(Circle, self).__init__()
-
-		self.direc = 1 # XXX TEMPORARY 
-
-		for i in range(0, samplePts):
-			i = float(i) / samplePts * 2 * math.pi
-			x = int(math.cos(i) * radius)
-			y = int(math.sin(i) * radius)
-			self.points.append(Point(x, y))
 
 dacs = {}
 dacs['china'] = dac.DAC(IPAddrs['china'])
@@ -37,7 +28,7 @@ dacs['usa']	  = dac.DAC(IPAddrs['usa'])
 
 entities = []
 entities.append(Circle())
-entities.append(Circle())
+entities.append(Square())
 
 entities[0].x = 10000
 entities[0].y = 10000
