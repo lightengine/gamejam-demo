@@ -48,6 +48,7 @@ for i in range(len(entities)):
 	frame.add(entity)
 
 def set_frame(frame):
+	frame.setDistortions(distortions)
 	frame.freeze()
 	for d in dacs.values():
 		d.stream.setNextFrame2(frame)
@@ -61,6 +62,7 @@ def set_frame(frame):
 def dac_thread(key):
 	while True:
 		try:
+			print 'Connecting to dac @ %s' % IPAddrs[key]
 			dacs[key] = dac.DAC(IPAddrs[key])
 			d = dacs[key]
 			d.stream = PointStream()
@@ -72,12 +74,15 @@ def dac_thread(key):
 			sys.exit()
 
 		except Exception as e:
+			"""
 			import sys, traceback
 			print '\n---------------------'
 			print 'Exception: %s' % e
 			print '- - - - - - - - - - -'
 			traceback.print_tb(sys.exc_info()[2])
 			print "\n"
+			"""
+			continue
 
 def game_thread():
 	while True:

@@ -21,10 +21,16 @@ class LogicalFrame(object):
 		#	physicalFrame[laserKey] => PhysicalFrame()
 		self.physicalFrames = {}
 
+		# Distortion map
+		self.distortions = {}
+
 	def add(self, entity):
 		if self.frozen:
 			return
 		self.entities.append(entity)
+
+	def setDistortions(self, distortions):
+		self.distortions = distortions
 
 	def freeze(self):
 		self.frozen = True
@@ -32,10 +38,11 @@ class LogicalFrame(object):
 			key = entity.laserKey
 			if key not in self.physicalFrames:
 				self.physicalFrames[key] = PhysicalFrame()
+				self.physicalFrames[key].setDistortion(self.distortions[key])
 			self.physicalFrames[key].addEntity(entity)
 
-		#for physFrame in self.physicalFrames.values():
-		#	physFrame.calculate()
+		for physFrame in self.physicalFrames.values():
+			physFrame.calculate()
 
 	def getPhysical(self, key, distortion=None):
 		if key not in self.physicalFrames:
@@ -85,9 +92,6 @@ class PhysicalFrame(object):
 		self.isCalculated = True
 
 	def produce(self):
-		if not self.isCalculated:
-			self.calculate()
-
 		for i in xrange(len(self.ptBuf)):
 			yield self.ptBuf[i]
 
