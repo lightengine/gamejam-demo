@@ -1,4 +1,3 @@
-
 """
 LOGICAL FRAME
 	* No blanking -- that's a physical artifact
@@ -7,6 +6,9 @@ LOGICAL FRAME
 
 from color import CMAX
 from entity_gfx import GfxEntity
+
+TRACKING_SAMPLE_PTS = 10
+TRACKING_DISPLAY = True
 
 class LogicalFrame(object):
 	def __init__(self):
@@ -81,7 +83,13 @@ class PhysicalFrame(object):
 		self.distortion = distortion
 
 	def calculate(self):
+
+		# A list of lists
+		entitiesPts = []
+
 		for entity in self.entities:
+			entityPts = []
+
 			for point in entity.points:
 				x = point.x
 				y = point.y
@@ -93,7 +101,38 @@ class PhysicalFrame(object):
 					y += self.distortion.y
 
 				pt = (x, y, CMAX, CMAX, CMAX)
+				entityPts.append(pt)
+
+			entitiesPts.append(entityPts)
+
+		# Add objects and tracking
+		for i in xrange(len(entitiesPts)):
+			entityPts = entitiesPts[i]
+			pt = None
+			for pt in entityPts:
 				self.ptBuf.append(pt)
+
+			currentLastPt = pt
+			nextFirstPt = entitiesPts[(i+1)%len(entitiesPts)][0]
+
+			lastX = currentLastPt[0]
+			lastY = currentLastPt[1]
+			xDiff = currentLastPt[0] - nextFirstPt[0]
+			yDiff = currentLastPt[1] - nextFirstPt[1]
+
+			mv = TRACKING_SAMPLE_PTS
+
+			for i in xrange(mv):
+				percent = i/float(mv)
+				xb = int(lastX - xDiff*percent)
+				yb = int(lastY - yDiff*percent)
+				# If we want to debug the tracking path
+				if TRACKING_DISPLAY:
+					pt = (xb, yb, CMAX, CMAX, 0)
+					self.ptBuf.append(pt)
+				else:
+					pt = (xb, yb, 0, 0, 0)
+					self.ptBuf.append(pt)
 
 		self.isCalculated = True
 
