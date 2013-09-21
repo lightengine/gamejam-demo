@@ -33,14 +33,16 @@ class Square(Entity):
 		self.points.extend(make_line(edges[0], edges[1]))
 		for i in range(vertSample):
 			self.points.append(edges[1].copy())
+
 		self.points.extend(make_line(edges[1], edges[2]))
 		for i in range(vertSample):
 			self.points.append(edges[2].copy())
+
 		self.points.extend(make_line(edges[2], edges[3]))
 		for i in range(vertSample):
 			self.points.append(edges[3].copy())
+
 		self.points.extend(make_line(edges[3], edges[0]))
 		for i in range(vertSample):
 			self.points.append(edges[0].copy())
-
 

@@ -56,9 +56,10 @@ class PointStream(object):
 
 		# Multilaser hack
 		self.laserKey = None
+		self.distortion = None
 
 	def setNextFrame2(self, frame):
-		physFrame = frame.getPhysical(self.laserKey)
+		physFrame = frame.getPhysical(self.laserKey, self.distortion)
 		self.nextFrame = physFrame
 
 	def transform(self, point):
@@ -116,6 +117,8 @@ class PointStream(object):
 				if not frame:
 					yield (0, 0, 0, 0, 0)
 					continue
+
+				frame.calculate()
 
 				for pt in frame.ptBuf:
 					yield pt

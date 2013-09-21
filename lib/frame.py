@@ -34,13 +34,16 @@ class LogicalFrame(object):
 				self.physicalFrames[key] = PhysicalFrame()
 			self.physicalFrames[key].addEntity(entity)
 
-		for physFrame in self.physicalFrames.values():
-			physFrame.calculate()
+		#for physFrame in self.physicalFrames.values():
+		#	physFrame.calculate()
 
-	def getPhysical(self, key):
+	def getPhysical(self, key, distortion=None):
 		if key not in self.physicalFrames:
 			return False
-		return self.physicalFrames[key]
+
+		physFrame = self.physicalFrames[key]
+		physFrame.setDistortion(distortion)
+		return physFrame
 
 """
 PHYSICAL FRAME
@@ -51,23 +54,40 @@ PHYSICAL FRAME
 class PhysicalFrame(object):
 	def __init__(self):
 		self.entities = []
+		self.distortion = None
 
 		# An array of converted and cached pos/color 5-tuples 
 		# These are converted from Points
 		self.ptBuf = []
+		self.isCalculated = False
 
 	def addEntity(self, entity):
 		self.entities.append(entity)
+
+	def setDistortion(self, distortion):
+		self.distortion = distortion
 
 	def calculate(self):
 		for entity in self.entities:
 			for point in entity.points:
 				x = point.x + entity.x
 				y = point.y + entity.y
+
+				if self.distortion:
+					x *= self.distortion.scaleX
+					y *= self.distortion.scaleY
+					x += self.distortion.x
+					y += self.distortion.y
+
 				pt = (x, y, CMAX, CMAX, CMAX)
 				self.ptBuf.append(pt)
 
+		self.isCalculated = True
+
 	def produce(self):
+		if not self.isCalculated:
+			self.calculate()
+
 		for i in xrange(len(self.ptBuf)):
 			yield self.ptBuf[i]
 
