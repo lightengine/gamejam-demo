@@ -19,6 +19,8 @@ from lib.distortion import Distortion
 from entities.circle import Circle
 from entities.square import Square
 
+from game.main import *
+
 IPAddrs = {
 	'china':	'169.254.156.114',
 	'usa':		'169.254.97.11',
@@ -113,7 +115,7 @@ def game_thread():
 
 thread.start_new_thread(dac_thread, ('china',))
 thread.start_new_thread(dac_thread, ('usa',))
-thread.start_new_thread(game_thread, ())
+thread.start_new_thread(update_thread, ())
 
 while True:
 	time.sleep(100000)
