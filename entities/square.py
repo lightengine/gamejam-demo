@@ -35,3 +35,4 @@ class Square(Entity):
 		self.points.extend(make_line(edges[2], edges[3]))
 		self.points.extend(make_line(edges[3], edges[0]))
 
+

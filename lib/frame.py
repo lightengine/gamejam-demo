@@ -16,6 +16,11 @@ class LogicalFrame(object):
 		# These are converted from Points
 		self.ptBuf = []
 
+		# Physically computed frames
+		# Indexed by `laserKey`:
+		#	physicalFrame[laserKey] => PhysicalFrame()
+		self.physicalFrames = {}
+
 	def add(self, entity):
 		if self.frozen:
 			return
@@ -23,6 +28,38 @@ class LogicalFrame(object):
 
 	def freeze(self):
 		self.frozen = True
+		for entity in self.entities:
+			key = entity.laserKey
+			if key not in self.physicalFrames:
+				self.physicalFrames[key] = PhysicalFrame()
+			self.physicalFrames[key].addEntity(entity)
+
+		for physFrame in self.physicalFrames.values():
+			physFrame.calculate()
+
+	def getPhysical(self, key):
+		if key not in self.physicalFrames:
+			return False
+		return self.physicalFrames[key]
+
+"""
+PHYSICAL FRAME
+	* Blanking exists
+	* Objects moved to a laser projector.
+"""
+
+class PhysicalFrame(object):
+	def __init__(self):
+		self.entities = []
+
+		# An array of converted and cached pos/color 5-tuples 
+		# These are converted from Points
+		self.ptBuf = []
+
+	def addEntity(self, entity):
+		self.entities.append(entity)
+
+	def calculate(self):
 		for entity in self.entities:
 			for point in entity.points:
 				x = point.x + entity.x
@@ -33,15 +70,5 @@ class LogicalFrame(object):
 	def produce(self):
 		for i in xrange(len(self.ptBuf)):
 			yield self.ptBuf[i]
-
-"""
-PHYSICAL FRAME
-	* Blanking exists
-	* Objects moved to a laser projector.
-"""
-
-class PhysicalFrame(object):
-	def __init__(self):
-		pass
 
 

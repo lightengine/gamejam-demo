@@ -27,8 +27,8 @@ dacs['china'] = dac.DAC(IPAddrs['china'])
 dacs['usa']	  = dac.DAC(IPAddrs['usa'])
 
 entities = []
-entities.append(Circle())
 entities.append(Square())
+entities.append(Circle())
 
 entities[0].x = 10000
 entities[0].y = 10000
@@ -42,11 +42,18 @@ frame.add(entities[1])
 def set_frame(frame):
 	frame.freeze()
 	for d in dacs.values():
-		d.stream.setNextFrame(frame)
+		d.stream.setNextFrame2(frame)
+
+	"""
+	for laserKey, d in dacs.iteritems():
+		physFrame = frame.getPhysical(laserKey)
+		d.stream.setNextPhysicalFrame(physFrame)
+	"""
 
 def dac_thread(key):
 	d = dacs[key]
 	d.stream = PointStream()
+	d.stream.laserKey = key
 	while True:
 		try:
 			d.play_stream(d.stream)

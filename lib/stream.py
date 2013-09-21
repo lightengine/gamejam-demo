@@ -54,8 +54,12 @@ class PointStream(object):
 		self.frame = None
 		self.nextFrame = None
 
-	def setNextFrame(self, frame):
-		self.nextFrame = frame
+		# Multilaser hack
+		self.laserKey = None
+
+	def setNextFrame2(self, frame):
+		physFrame = frame.getPhysical(self.laserKey)
+		self.nextFrame = physFrame
 
 	def transform(self, point):
 		"""
