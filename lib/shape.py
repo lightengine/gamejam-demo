@@ -25,6 +25,7 @@ class Shape(object):
 		self.doBlanking = True # should get blanking? 
 		self.skipDraw = False
 		self.destroy = False # TODO: Remove feature
+		self.drawn = False
 
 		# Cached first and last points. 
 		# (Part of the PointStream algo.)
