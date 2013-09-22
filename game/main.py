@@ -49,7 +49,6 @@ def draw_thread(dacs, distortions, queues):
 			traceback.print_tb(sys.exc_info()[2])
 			print "\n"
 
-
 def update_thread():
 		last_time = datetime.now()
 		while True:
@@ -59,7 +58,6 @@ def update_thread():
 
 			time.sleep(1/30);
 
-
 def create_game_threads(dacs, distortions, queues):
 	thread.start_new_thread(draw_thread, (dacs, distortions, queues))
 	thread.start_new_thread(update_thread,())
@@ -68,6 +66,7 @@ def create_game_threads(dacs, distortions, queues):
 
 def update(delta_t):
 	#move the player
+	player.rotateZ += 0.00001
+	player.rotateX += 0.00001
 	pass
 
-	

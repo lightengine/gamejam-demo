@@ -17,6 +17,10 @@ class Entity(object):
 		self.scale = 1.0
 		self.rotation = 0.0
 
+		self.rotateZ = 0.0
+		self.rotateX = 0.0
+		self.rotateY = 0.0
+
 		# Id handling
 		self.eid = Entity._ENTITY_ID_COUNTER
 		Entity._ENTITY_ID_COUNTER += 1

@@ -21,7 +21,7 @@ from lib.queues import NonblockQueue
 from game.main import *
 
 IPAddrs = {
-	'china':	'169.254.156.113',
+	'china':	'169.254.156.112',
 	'usa':		'169.254.97.13',
 }
 
