@@ -13,7 +13,7 @@ from entities.square import Square
 from entities.note1 import Note1
 from entities.arrow import Arrow
 from entities.line import Line
-
+from entities.letterx import LetterX
 
 entities = []
 
@@ -24,7 +24,7 @@ for i in xrange(-2,3):
 	tmpLine.laserKey = 'usa'
 	entities.append(tmpLine)
 
-player = Arrow()
+player = LetterX()
 player.tempRotX = 0.0
 player.tempRotY = 0.0
 player.tempRotZ = 0.0
