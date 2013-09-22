@@ -8,7 +8,7 @@ PROJ_DIR="$DIR/.."
 # Password is not set! Use `ssh-copy-id` to prevent fumbling around with it.
 export USER='laser'
 export HOST='169.254.10.49'
-export DIR_ROOT='/home/laser/dev/laser/gamejam-demo'
+export DIR_ROOT='/home/laser/dev/gamejam-demo'
 
 #
 # Functions and Aliases
@@ -29,5 +29,5 @@ function print_status() {
 
 print_status 'Clean everything'
 ssh -o "StrictHostKeyChecking no" $USER@$HOST << ENDHERE
-	rm -rf *
+  cd $DIR_ROOT &&	rm -rf *
 ENDHERE

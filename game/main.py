@@ -11,13 +11,23 @@ from lib.frame import LogicalFrame
 
 from entities.circle import Circle
 from entities.square import Square
+from entities.line import Line
 
 from set_frame import set_frame
 
 entities = []
 
+for i in xrange(-2,3):
+	tmpLine = Line()
+	tmpLine.y = 3000 * i
+	tmpLine.x = 10000
+	tmpLine.laserKey = 'usa'
+	entities.append(tmpLine)
 player = Circle()
 
+player.laserKey = 'usa'
+player.scale = 10
+player.rotation = .5
 entities.append(player)
 
 # define our game loops
@@ -43,8 +53,10 @@ def update_thread():
 		last_time = datetime.now()
 		while True:
 			delta_t = datetime.now() - last_time
-			update(delta_t)
+			update(delta_t.microseconds)
 			last_time = datetime.now()
+
+			time.sleep(1/30);
 
 
 def create_game_threads(dacs, distortions):
@@ -56,4 +68,5 @@ def create_game_threads(dacs, distortions):
 def update(delta_t):
 	#move the player
 	pass
+
 	
