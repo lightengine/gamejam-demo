@@ -7,13 +7,6 @@ PHYSICAL FRAME
 from color import CMAX
 from entity_gfx import GfxEntity
 
-
-TRACKING_SAMPLE_PTS = 20
-TRACKING_DISPLAY = False
-
-BLANKING_SAMPLE_PTS = 20
-BLANKING_DISPLAY = False
-
 class PhysicalFrame(object):
 	def __init__(self):
 		self.entities = []
@@ -24,11 +17,20 @@ class PhysicalFrame(object):
 		self.ptBuf = []
 		self.isCalculated = False
 
+		self.blankingSamplePts = 15
+		self.blankingDisplay = False
+		self.trackingSamplePts= 15
+		self.trackingDisplay = False
+
 	def addEntity(self, entity):
 		self.entities.append(entity)
 
 	def setDistortion(self, distortion):
 		self.distortion = distortion
+		self.blankingSamplePts = distortion.blankingSamplePts
+		self.blankingDisplay = distortion.blankingDisplay
+		self.trackingSamplePts = distortion.trackingSamplePts
+		self.trackingDisplay = distortion.trackingDisplay
 
 	def calculate(self):
 		# A list of lists
@@ -62,8 +64,8 @@ class PhysicalFrame(object):
 			firstY = firstPt[1]
 
 			# Blank the laser on its way "in"
-			for i in xrange(BLANKING_SAMPLE_PTS):
-				if BLANKING_DISPLAY:
+			for i in xrange(self.blankingSamplePts):
+				if self.blankingDisplay:
 					pt = (firstX, firstY, CMAX, CMAX, 0)
 					self.ptBuf.append(pt)
 				else:
@@ -80,8 +82,8 @@ class PhysicalFrame(object):
 			lastY = currentLastPt[1]
 
 			# Blank the laser.
-			for i in xrange(BLANKING_SAMPLE_PTS):
-				if BLANKING_DISPLAY:
+			for i in xrange(self.blankingSamplePts):
+				if self.blankingDisplay:
 					pt = (lastX, lastY, CMAX, CMAX, 0)
 					self.ptBuf.append(pt)
 				else:
@@ -93,7 +95,7 @@ class PhysicalFrame(object):
 			xDiff = currentLastPt[0] - nextFirstPt[0]
 			yDiff = currentLastPt[1] - nextFirstPt[1]
 
-			mv = TRACKING_SAMPLE_PTS
+			mv = self.trackingSamplePts
 
 			for i in xrange(mv):
 				percent = i/float(mv)
@@ -101,7 +103,7 @@ class PhysicalFrame(object):
 				yb = int(lastY - yDiff*percent)
 
 				# If we want to debug the tracking path
-				if TRACKING_DISPLAY:
+				if self.trackingDisplay:
 					pt = (xb, yb, CMAX, CMAX, 0)
 					self.ptBuf.append(pt)
 				else:

@@ -247,6 +247,7 @@ def destroy_thread(entity):
 		if not hasattr(entity, 'no_animation'):
 			animationCounter = 500000
 			last_time = datetime.now()
+			SOUND.MOTHER.play()
 
 			if not hasattr(entity, 'xRotInc'):
 					# Must maintain rotation state
