@@ -46,3 +46,6 @@ class Square(Entity):
 		for i in range(vertSample):
 			self.points.append(edges[0].copy())
 
+		## normalize with other objects
+		self.scale = 2
+

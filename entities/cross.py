@@ -531,3 +531,6 @@ class Cross(Entity):
 			pt = points[i]
 			self.points.append(Point((pt['x']-xAvg)*50, (pt['y']-yAvg)*-50))
 
+
+		#normalize
+		self.scale = 1.2

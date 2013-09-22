@@ -532,3 +532,5 @@ class Triangle(Entity):
 			pt = points[i]
 			self.points.append(Point((pt['x']-xAvg)*40, (pt['y']-yAvg)*-40))
 
+		#normalize
+		self.scale = 0.6
