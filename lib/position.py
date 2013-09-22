@@ -6,4 +6,4 @@ class Position(object):
 		self.y = y
 
 	def isWithin(self, region):
-		pass
+		return region.contains(self)

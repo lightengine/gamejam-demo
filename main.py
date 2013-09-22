@@ -20,7 +20,7 @@ from game.main import *
 
 IPAddrs = {
 	'china':	'169.254.156.112',
-	'usa':		'169.254.97.11',
+	'usa':		'169.254.97.13',
 }
 
 dacs = {}
