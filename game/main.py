@@ -10,6 +10,7 @@ from lib.set_frame import set_frame
 
 from entities.circle import Circle
 from entities.square import Square
+from entities.note1 import Note1
 from entities.line import Line
 
 
@@ -21,9 +22,9 @@ for i in xrange(-2,3):
 	tmpLine.x = 10000
 	tmpLine.laserKey = 'usa'
 	entities.append(tmpLine)
-player = Circle()
+player = Note1()
 
-player.laserKey = 'usa'
+player.laserKey = 'china'
 player.scale = 10
 player.rotation = .5
 entities.append(player)
