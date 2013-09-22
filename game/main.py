@@ -9,6 +9,7 @@ import pygame
 from datetime import datetime
 from lib.frame import LogicalFrame
 from lib.set_frame import set_frame
+from lib.color import Color, CMAX
 
 from entities.circle import Circle
 from entities.square import Square
@@ -207,12 +208,16 @@ def game_loop(delta_t, init=False):
 			enemy.type = random.randint(0, 3)
 			if enemy.type == 0:
 				enemy.entity = Triangle()
+				enemy.entity.color = Color(0, CMAX, 0)
 			elif enemy.type == 1:
 				enemy.entity = Circle()
+				enemy.entity.color = Color(CMAX, 0, 0)
 			elif enemy.type == 2:
 				enemy.entity = Cross()
+				enemy.entity.color = Color(CMAX, CMAX, 0)
 			elif enemy.type == 3:
 				enemy.entity = Square()
+				enemy.entity.color = Color(CMAX, CMAX, CMAX)
 
 			enemy.entity.laserKey = 'china'
 			enemy.entity.x = -22000
@@ -284,9 +289,9 @@ def game_loop(delta_t, init=False):
 
 # TRIFORCE
 triforce = {
-	'power': Triangle(),
-	'courage': Triangle(),
-	'wisdom': Triangle(),
+	'power': Triangle(color=Color(CMAX, CMAX, 0)),
+	'courage': Triangle(color=Color(CMAX, CMAX, 0)),
+	'wisdom': Triangle(color=Color(CMAX, CMAX, 0)),
 }
 
 initialLoc= {

@@ -4,8 +4,9 @@ from lib.point import *
 import math
 
 class Triangle(Entity):
-	def __init__(self):
+	def __init__(self, color=None):
 		super(Triangle, self).__init__()
+		self.color = color
 
 		self.direc = 1 # XXX TEMPORARY 
 

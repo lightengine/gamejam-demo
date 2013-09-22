@@ -11,6 +11,9 @@ class Entity(object):
 		# Points in the system (x, y, isBlank)
 		self.points = []
 
+		# Optional color for whole object
+		self.color = None
+
 		# Positioning stuff
 		self.x = 0
 		self.y = 0

@@ -49,7 +49,13 @@ class PhysicalFrame(object):
 					x += self.distortion.x
 					y += self.distortion.y
 
-				pt = (x, y, CMAX, CMAX, CMAX)
+				r, g, b = (CMAX, CMAX, CMAX)
+				if entity.color:
+					r = entity.color.r
+					g = entity.color.g
+					b = entity.color.b
+
+				pt = (x, y, r, g, b)
 				entityPts.append(pt)
 
 			entitiesPts.append(entityPts)

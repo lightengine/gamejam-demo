@@ -7,6 +7,7 @@ class GfxEntity(object):
 		self.points = []
 		self.x = entity.x
 		self.y = entity.y
+		self.color = entity.color
 		self.scale = entity.scale
 		self.rotateZ = entity.rotateZ
 		self.rotateX = entity.rotateX

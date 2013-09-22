@@ -26,16 +26,10 @@ LASER_COLORS = {
 
 class Color(object):
 	"""Simple color struct."""
-	def __init__(self, r=0, g=0, b=0, name=None):
+	def __init__(self, r=0, g=0, b=0):
 		self.r = r
 		self.g = g
 		self.b = b
-
-		if name and name in LASER_COLORS:
-			c = LASER_COLORS[name]
-			self.r = c[0]
-			self.g = c[1]
-			self.b = c[2]
 
 	def __str__(self):
 		return "<Color: %s, %s, %s>" % (self.r, self.g, self.b)
