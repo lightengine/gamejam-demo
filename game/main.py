@@ -131,13 +131,13 @@ def update_thread():
 			enemies.append(enemy)
 			entities.append(enemy)
 			enemySpawnCounter = random.randint(1000000,5000000)
-		
+
 		#move/collide enemies/player
 		enemyDeleteList = []
 		for enemy in enemies:
 			enemy.x += delta_t.microseconds * 0.01
 			if enemy.x > 20000:
-				enemyDeleteList.append(enemy)		
+				enemyDeleteList.append(enemy)
 
 		#create bullets
 		timeSinceShot -= delta_t.microseconds
@@ -149,7 +149,6 @@ def update_thread():
 			bullets.append(bullet)
 			entities.append(bullet)
 			timeSinceShot = 400000
-
 
 		#move/collide bullets
 		bulletDeleteList = []
@@ -168,7 +167,6 @@ def update_thread():
 						enemy.doDelete = True
 						#remove bullet
 						bulletDeleteList.append(bullet)
-
 
 		for enemy in enemyDeleteList:
 			enemy.doDelete = True
@@ -198,7 +196,9 @@ def destroy_thread(entity):
 		last_time = datetime.now()
 		time.sleep(1/30.0)
 	entities.remove(entity)
+	time.sleep(1/30.0)
 
 def create_game_threads(dacs, distortions, queues):
 	thread.start_new_thread(draw_thread, (dacs, distortions, queues))
 	thread.start_new_thread(update_thread,())
+
