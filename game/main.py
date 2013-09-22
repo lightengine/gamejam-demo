@@ -26,7 +26,7 @@ for i in xrange(-2,3):
 	tmpLine.laserKey = 'usa'
 	entities.append(tmpLine)
 """
-player = Circle()
+player = LetterX()
 
 player.laserKey = 'usa'
 player.scale = 10
@@ -50,11 +50,12 @@ def draw_thread(dacs, distortions, queues):
 	while True:
 		try:
 			frame = LogicalFrame()
-			for e in entities:
+			tmpEnt = entities[:]
+			for e in tmpEnt:
 				frame.add(e)
 
 			set_frame(frame, distortions, queues)
-			time.sleep(0.05)
+			time.sleep(1/60.0)
 
 		except Exception as e:
 			import sys, traceback
@@ -136,7 +137,7 @@ def update_thread():
 			enemy = Square()
 			enemy.laserKey = 'china'
 			enemy.x = -22000
-			enemy.y = random.randint(-2,2) * 3000			
+			enemy.y = random.randint(-2,2) * 3000
 			enemies.append(enemy)
 			entities.append(enemy)
 			enemySpawnCounter = random.randint(1000000,5000000)
@@ -144,7 +145,7 @@ def update_thread():
 		#move/collide enemies/player
 		enemyDeleteList = []
 		for enemy in enemies:
-			enemy.x+=delta_t.microseconds * 0.01
+			enemy.x += delta_t.microseconds * 0.01
 			if enemy.x > 20000:
 				enemyDeleteList.append(enemy)		
 
@@ -167,31 +168,43 @@ def update_thread():
 			#check for off screen
 			if bullet.x < -20000:
 				bulletDeleteList.append(bullet)
-
-			#check for collision with enemy
-			for enemy in enemies:
-				# all enemies are 2000 points wide
-				if abs(bullet.x - enemy.x)<1000 and bullet.y == enemy.y:
-					#remove enemy
-					enemyDeleteList.append(enemy)
-					#remove bullet
-					bulletDeleteList.append(bullet)
+			else:
+				#check for collision with enemy
+				for enemy in enemies:
+					# all enemies are 2000 points wide
+					if abs(bullet.x - enemy.x)<1000 and bullet.y == enemy.y:
+						#remove enemy
+						enemyDeleteList.append(enemy)
+						enemy.doDelete = True
+						#remove bullet
+						bulletDeleteList.append(bullet)
 
 
 		for enemy in enemyDeleteList:
-			enemy.points = []
+			enemy.doDelete = True
 			enemies.remove(enemy)
-			entities.remove(enemy)
-			del enemy
+			thread.start_new_thread(destroy_thread, (enemy,))
 
 		for bullet in bulletDeleteList:
-			bullet.points = []
 			bullets.remove(bullet)
-			entities.remove(bullet)
-			del bullet
+			thread.start_new_thread(destroy_thread, (bullet,))
 
 		last_time = datetime.now()
-		time.sleep(1/100.0);
+		time.sleep(1/100.0)
+
+def destroy_thread(entity):
+	animationCounter = 500000
+	last_time = datetime.now()
+
+	while animationCounter>0:
+		delta_t = datetime.now() - last_time
+		entity.scale += 0.01
+		entity.rotateX += random.randint(0,5) * 0.01
+		entity.rotateZ += random.randint(0,5) * 0.01
+		entity.rotateY += random.randint(0,5) * 0.01
+		animationCounter -= delta_t.microseconds
+		last_time = datetime.now()
+	entities.remove(entity)
 
 def create_game_threads(dacs, distortions, queues):
 	thread.start_new_thread(draw_thread, (dacs, distortions, queues))
