@@ -131,7 +131,7 @@ def update_thread():
 			enemy.y = random.randint(-2,2) * 3000
 			enemies.append(enemy)
 			entities.append(enemy)
-			enemySpawnCounter = random.randint(1000000,5000000)
+			enemySpawnCounter = random.randint(500000,800000)
 
 		#move/collide enemies/player
 		enemyDeleteList = []
@@ -187,10 +187,10 @@ def destroy_thread(entity):
 
 	while animationCounter>0:
 		delta_t = datetime.now() - last_time
-		entity.scale += 0.1
+		entity.scale += 0.5
 		entity.rotateZ += random.randint(0,5) * 0.1
 		entity.initMatStack()
-		entity.pushRotateX(2*math.pi * entity.scale*-0.05)
+		entity.pushRotateX(2*math.pi * entity.scale*-0.1)
 		entity.pushRotateY(2*math.pi * entity.scale*0.1)
 		entity.doneMatStack()
 		animationCounter -= delta_t.microseconds
