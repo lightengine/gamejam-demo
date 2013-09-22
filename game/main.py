@@ -25,9 +25,12 @@ for i in xrange(-2,3):
 
 player = Note1()
 player.tempRotX = 0.0
+player.tempRotY = 0.0
+player.tempRotZ = 0.0
+
 
 player.laserKey = 'china'
-player.scale = 10
+player.scale = 2
 player.rotation = .5
 entities.append(player)
 
@@ -58,7 +61,7 @@ def update_thread():
 			update(delta_t.microseconds)
 			last_time = datetime.now()
 
-			time.sleep(1/30);
+			time.sleep(0.05);
 
 def create_game_threads(dacs, distortions, queues):
 	thread.start_new_thread(draw_thread, (dacs, distortions, queues))
@@ -66,14 +69,29 @@ def create_game_threads(dacs, distortions, queues):
 
 # FOR THE LOVE OF GOD LOOK AWAY THIS CODE IS HIDIOUS!
 
+PERIOD = 2*math.pi
+
 def update(delta_t):
-	player.tempRotX += 0.0000001
+	player.tempRotX += 0.1
+	if player.tempRotX > PERIOD:
+		player.tempRotX = 0
+
+	player.tempRotY += 0.07
+	if player.tempRotY > PERIOD:
+		player.tempRotY = 0
+
+	player.tempRotZ += 0.09
+	if player.tempRotZ > PERIOD:
+		player.tempRotZ = 0
+
 	#move the player
-	#player.rotateZ += 0.00001
-	#player.rotateX += 0.00001
+	player.rotateZ += 0.1
+	player.rotateX += 0.00001
 
 	player.initMatStack()
-	player.pushRotateX(player.tempRotX)
-	player.pushRotateY(player.tempRotX)
+	#player.pushRotateZ(player.tempRotZ)
+	#player.pushRotateX(math.pi/140)
+	player.pushRotateY(player.tempRotY)
+	#player.pushRotateX(player.tempRotX)
 	player.doneMatStack()
 

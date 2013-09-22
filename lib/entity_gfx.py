@@ -59,7 +59,6 @@ class GfxEntity(object):
 			#x *= self.scale
 			#y *= self.scale
 
-			"""
 			if self.rotateZ != 0.0:
 				(x2, y2) = (x, y)
 				x2 = x
@@ -67,6 +66,7 @@ class GfxEntity(object):
 				x = x2*math.cos(self.rotateZ) - y2*math.sin(self.rotateZ)
 				y = y2*math.cos(self.rotateZ) + x2*math.sin(self.rotateZ)
 
+			"""
 			if self.rotateX != 0.0:
 				x *= math.sin(self.rotateX)
 

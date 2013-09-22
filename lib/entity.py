@@ -37,7 +37,7 @@ class Entity(object):
 		self.laserKey = None
 
 	def initMatStack(self):
-		self.matStack = []
+		self._matStack = []
 
 	def pushRotateX(self, theta):
 		mat = numpy.matrix([[1, 0, 0],
@@ -60,7 +60,6 @@ class Entity(object):
 
 	def doneMatStack(self):
 		self.fMatStack = self._matStack[:]
-
 		rotX = None
 		rotY = None
 		if len(self.fMatStack) > 0:
@@ -78,6 +77,8 @@ class Entity(object):
 
 		self._matTransformX = rotX
 		self._matTransformY = rotY
+
+		self._matStack = []
 
 	def produce(self):
 		for i in range(len(self.points)):
