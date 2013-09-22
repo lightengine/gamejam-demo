@@ -12,8 +12,8 @@ from lib.set_frame import set_frame
 
 from entities.circle import Circle
 from entities.square import Square
+from entities.note1 import Note1
 from entities.line import Line
-from game.controller import *
 
 
 entities = []
