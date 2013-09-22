@@ -356,7 +356,6 @@ def destroy_thread(entity):
 				sound = random.choice(SOUND.PIANOS)
 				sound.play()
 
-			SOUND.MOTHER.play()
 			if not hasattr(entity, 'xRotInc'):
 					# Must maintain rotation state
 					entity.xRotState = 0.0
