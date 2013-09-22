@@ -22,7 +22,9 @@ for i in xrange(-2,3):
 	tmpLine.x = 10000
 	tmpLine.laserKey = 'usa'
 	entities.append(tmpLine)
+
 player = Note1()
+player.tempRotX = 0.0
 
 player.laserKey = 'china'
 player.scale = 10
@@ -65,8 +67,13 @@ def create_game_threads(dacs, distortions, queues):
 # FOR THE LOVE OF GOD LOOK AWAY THIS CODE IS HIDIOUS!
 
 def update(delta_t):
+	player.tempRotX += 0.0000001
 	#move the player
-	player.rotateZ += 0.00001
-	player.rotateX += 0.00001
-	pass
+	#player.rotateZ += 0.00001
+	#player.rotateX += 0.00001
+
+	player.initMatStack()
+	player.pushRotateX(player.tempRotX)
+	player.pushRotateY(player.tempRotX)
+	player.doneMatStack()
 
