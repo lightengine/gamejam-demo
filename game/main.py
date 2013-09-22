@@ -228,7 +228,7 @@ def game_loop(delta_t, init=False):
 			if enemy.entity.x > 20000:
 				enemy.entity.no_animation = True
 				enemyDeleteList.append(enemy)
-			elif abs(enemy.entity.x - GAME.player.entity.x) < 1000 and GAME.player.type == enemy.type and GAME.player.entity.y == enemy.y:
+			elif abs(enemy.entity.x - GAME.player.entity.x) < 1000 and GAME.player.type == enemy.type and GAME.player.entity.y == enemy.entity.y:
 				#YOU LOOSE, YOU GET NOTHING! YOU ATE THE FIZZY LIFTING DRINK VOIDING THE CONTRACT THERFOR YOU GET NOTHING!
 				GAME.changeGameState = 0
 				entities.remove(GAME.player.entity)
@@ -350,11 +350,8 @@ def destroy_thread(entity):
 		if not hasattr(entity, 'no_animation'):
 			animationCounter = 500000
 			last_time = datetime.now()
-			if random.randint(0, 20) == 0:
-				SOUND.MOTHER.play()
-			else:
-				sound = random.choice(SOUND.PIANOS)
-				sound.play()
+			sound = random.choice(SOUND.PIANOS)
+			sound.play()
 
 			if not hasattr(entity, 'xRotInc'):
 					# Must maintain rotation state
