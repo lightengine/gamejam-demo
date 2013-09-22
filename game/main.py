@@ -6,7 +6,6 @@ import thread
 
 from datetime import *
 
-from Game import *
 
 from lib.frame import LogicalFrame
 
@@ -15,15 +14,13 @@ from entities.square import Square
 
 from set_frame import set_frame
 
-
 # define our game loops
-def draw_thread(dacs, distortions, game_objects):
+def draw_thread(dacs, distortions):
 	while True:
 		try:
 			frame = LogicalFrame()
-			for gObject in game_objects:
-				if hasattr(gObject, 'entity') && gObject.entity != None
-					fame.add(gObject.entity)
+			for e in entities:
+				frame.add(e)
 
 			set_frame(frame, dacs, distortions)
 
@@ -35,20 +32,30 @@ def draw_thread(dacs, distortions, game_objects):
 			traceback.print_tb(sys.exc_info()[2])
 			print "\n"
 
-def update_thread:(game)
+
+def update_thread():
 		last_time = datetime.now()
 		while True:
 			delta_t = datetime.now() - last_time
-			game.update(delta_t)
+			update(delta_t)
 			last_time = datetime.now()
 
+
 def create_game_threads(dacs, distortions):
-	factory = new GameFactory()
-	message_bus = new MessageBus()
-	game_objects = []
-	game = new Game(factory, game_objects, message_bus)
+	thread.start_new_thread(draw_thread, (dacs, distortions))
+	thread.start_new_thread(update_thread,())
 
+# FOR THE LOVE OF GOD LOOK AWAY THIS CODE IS HIDIOUS!
 
-	thread.start_new_thread(draw_thread, (dacs, distortions, game_objects))
-	thread.start_new_thread(update_thread,(game))
+entities = []
 
+player = Circle()
+square = Square()
+
+entities.append(player)
+entities.append(square)
+
+def update(delta_t):
+	#move the player
+	pass
+	
