@@ -16,13 +16,17 @@ from entities.note1 import Note1
 from entities.arrow import Arrow
 from entities.line import Line
 from entities.letterx import LetterX
+from game.player import Player
+from entities.triangle import Triangle
 
 entities = []
-player = LetterX()
-player.rotateZ = 0.75
 
-player.laserKey = 'usa'
-entities.append(player)
+player = Player()
+player.entity = LetterX()
+player.entity.rotateZ = 0.75
+
+player.entity.laserKey = 'usa'
+entities.append(player.entity)
 
 pygame.joystick.init()
 pygame.display.init()
@@ -64,7 +68,7 @@ def draw_thread(dacs, distortions, queues):
 		joystick.get_button(1),
 		joystick.get_button(2),
 		joystick.get_button(3),
-		joystick.get_button(4),
+		joystick.get_button(4),#start button
 		joystick.get_button(5),#up arrow
 		joystick.get_button(6),#rightarrow
 		joystick.get_button(7),#down arrow
@@ -100,26 +104,66 @@ def update_thread():
 	enemies, bullets = ([],[])
 	while True:
 		delta_t = datetime.now() - last_time
-
 		pygame.event.pump()
+
+		if joystick.get_button(12):
+			if player.type != 12:
+				tmp = Triangle()
+				tmp.x = player.entity.x
+				tmp.y = player.entity.y
+				tmp.laserKey = 'usa'
+				entities.remove(player.entity)
+				player.entity = tmp
+				entities.append(player.entity)
+				player.type = 12
+		if joystick.get_button(13):
+			if player.type != 13:
+				tmp = Circle()
+				tmp.x = player.entity.x
+				tmp.y = player.entity.y
+				tmp.laserKey = 'usa'
+				entities.remove(player.entity)
+				player.entity = tmp
+				entities.append(player.entity)
+				player.type = 13
+		if joystick.get_button(14):
+			if player.type != 14:
+				tmp = LetterX()
+				tmp.x = player.entity.x
+				tmp.y = player.entity.y
+				tmp.laserKey = 'usa'
+				entities.remove(player.entity)
+				player.entity = tmp
+				entities.append(player.entity)
+				player.type = 14
+		if joystick.get_button(15):
+			if player.type != 15:
+				tmp = Square()
+				tmp.x = player.entity.x
+				tmp.y = player.entity.y
+				tmp.laserKey = 'usa'
+				entities.remove(player.entity)
+				player.entity = tmp
+				entities.append(player.entity)
+				player.type = 15
 
 		timeSinceMove-=delta_t.microseconds
 		if timeSinceMove < 0:
 			#move the player up and down the music lines
-			if joystick.get_axis(1) < -0.5 and player.y<6000:
-				player.y += 3000
+			if joystick.get_axis(1) < -0.5 and player.entity.y<6000:
+				player.entity.y += 3000
 				timeSinceMove = 150000
-			if joystick.get_axis(1) > 0.5 and player.y>-6000:
-				player.y -= 3000
+			if joystick.get_axis(1) > 0.5 and player.entity.y>-6000:
+				player.entity.y -= 3000
 				timeSinceMove = 150000
 
 		#move player back and froth
-		if player.x>-20000 and player.x<20000:
-			player.x -= (delta_t.microseconds/50) * joystick.get_axis(0)
-			if player.x<-20000:
-				player.x = -19999
-			if player.x>20000:
-				player.x = 19999
+		if player.entity.x>-20000 and player.entity.x<20000:
+			player.entity.x -= (delta_t.microseconds/50) * joystick.get_axis(0)
+			if player.entity.x<-20000:
+				player.entity.x = -19999
+			if player.entity.x>20000:
+				player.entity.x = 19999
 
 
 		#create enemies
@@ -145,8 +189,8 @@ def update_thread():
 		if joystick.get_button(11) and timeSinceShot<0:
 			bullet = Line()
 			bullet.laserKey = 'usa'
-			bullet.x = player.x - 1000
-			bullet.y = player.y
+			bullet.x = player.entity.x - 1000
+			bullet.y = player.entity.y
 			bullets.append(bullet)
 			entities.append(bullet)
 			timeSinceShot = 400000
