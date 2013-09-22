@@ -6,14 +6,14 @@ import thread
 import random
 
 from lib.frame import LogicalFrame
+from lib.set_frame import set_frame
 
 from entities.circle import Circle
 from entities.square import Square
 
-from set_frame import set_frame
 
 entities = []
-for i in range(40):
+for i in range(10):
 	entities.append(Circle())
 
 for i in range(len(entities)):

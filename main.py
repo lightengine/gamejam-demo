@@ -33,7 +33,6 @@ dacs = {}
 dacs['china'] = None
 dacs['usa']	  = None
 
-
 distortions = {}
 distortions['china'] = Distortion(5000, -6600, 0.75, 0.75)
 distortions['usa'] = Distortion(-5000, 6600)

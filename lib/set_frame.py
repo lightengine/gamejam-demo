@@ -3,9 +3,6 @@ I hate this function.
 I am sorry that it exists.
 """
 
-from multiprocessing import Process, Queue
-
-
 def set_frame(frame, distortions, queues):
 	frame.setDistortions(distortions)
 	frame.freeze()

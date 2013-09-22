@@ -33,24 +33,13 @@ class PointStream(object):
 	def setQueue(self, queue):
 		self.queue = queue
 
-	def setNextFrame(self, frame):
-		print 'stream.setNextFrame()'
-		physFrame = frame.getPhysical(self.laserKey, self.distortion)
-		try:
-			self.queue.put(physFrame, block=False)
-		except:
-			pass
-
 	def getNextFrame(self):
-		#print 'try to get from queue...'
-		physFrame = None
 		try:
 			physFrame = self.queue.get(block=False)
+			if physFrame:
+				self.nextFrame = physFrame
 		except:
 			pass
-		#print 'stream.getNextFrame() got from queue: %s' % str(physFrame)
-		if physFrame:
-			self.nextFrame = physFrame
 
 	def read(self, n):
 		"""
