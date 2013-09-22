@@ -39,6 +39,8 @@ while not pygame.joystick.get_count():
 joystick = pygame.joystick.Joystick(0)
 joystick.init()
 
+SOUND.ZELDA.play()
+SOUND.TECHNO.playLoop()
 
 # define our game loops
 
@@ -108,7 +110,6 @@ def update_thread():
 				delta_t = datetime.now() - last_time
 				pygame.event.pump()
 				difficulty += delta_t.microseconds / 6000000.0
-				print(difficulty)
 				if joystick.get_button(12):
 						if player.type != 0:
 								tmp = Triangle()
@@ -248,7 +249,12 @@ def destroy_thread(entity):
 		if not hasattr(entity, 'no_animation'):
 			animationCounter = 500000
 			last_time = datetime.now()
-			SOUND.MOTHER.play()
+			if random.randint(0, 20) == 0:
+				SOUND.MOTHER.play()
+			else:
+				sound = random.choice(SOUND.PIANOS)
+				print sound.filename
+				sound.play()
 
 			if not hasattr(entity, 'xRotInc'):
 					# Must maintain rotation state
