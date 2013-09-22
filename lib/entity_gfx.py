@@ -58,8 +58,8 @@ class GfxEntity(object):
 			x = self.points[i].x
 			y = self.points[i].y
 
-			#x *= self.scale
-			#y *= self.scale
+			x *= self.scale
+			y *= self.scale
 
 			if self.rotateZ != 0.0:
 				(x2, y2) = (x, y)
