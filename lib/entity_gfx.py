@@ -2,14 +2,16 @@
 class GfxEntity(object):
 
 	def __init__(self, entity):
-		# Copy the entity's points
-		self.points = entity.points[:]
+		self.points = []
 		self.x = entity.x
 		self.y = entity.y
 		self.scale = entity.scale
 		self.rotation = entity.rotation
 
-		print self.x, self.y
+		# Copy the entity's points
+		for point in entity.points:
+			self.points.append(point.copy())
+
 		# Normalized yet?
 		self.isNormalized = False
 

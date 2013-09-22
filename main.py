@@ -24,8 +24,8 @@ IPAddrs = {
 }
 
 dacs = {}
-dacs['china'] = dac.DAC(IPAddrs['china'])
-dacs['usa']	  = dac.DAC(IPAddrs['usa'])
+dacs['china'] = None
+dacs['usa']	  = None
 
 distortions = {}
 distortions['china'] = Distortion(5000, -6600, 0.75, 0.75)
@@ -58,34 +58,7 @@ def dac_thread(key):
 			"""
 			continue
 
-def game_thread():
-	while True:
-		try:
-			frame = LogicalFrame()
-
-			# "Game movement", or whatever
-			for e in entities:
-				e.x += (10 * e.direc)
-				if e.x > 500:
-					e.x = 500
-					e.direc = -1
-				elif e.x < -500:
-					e.x = -500
-					e.direc = 1
-
-				frame.add(e)
-
-			set_frame(frame)
-
-		except:
-			import sys, traceback
-			print '\n---------------------'
-			print 'Exception: %s' % e
-			print '- - - - - - - - - - -'
-			traceback.print_tb(sys.exc_info()[2])
-			print "\n"
-
-thread.start_new_thread(dac_thread, ('china',))
+#thread.start_new_thread(dac_thread, ('china',))
 thread.start_new_thread(dac_thread, ('usa',))
 
 create_game_threads(dacs, distortions)
