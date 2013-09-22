@@ -8,10 +8,10 @@ from color import CMAX
 from entity_gfx import GfxEntity
 
 
-TRACKING_SAMPLE_PTS = 10
+TRACKING_SAMPLE_PTS = 20
 TRACKING_DISPLAY = False
 
-BLANKING_SAMPLE_PTS = 10
+BLANKING_SAMPLE_PTS = 20
 BLANKING_DISPLAY = False
 
 class PhysicalFrame(object):

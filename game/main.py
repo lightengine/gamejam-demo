@@ -18,6 +18,7 @@ from entities.line import Line
 from game.player import Player
 from entities.triangle import Triangle
 from entities.cross import Cross
+from sound import *
 from game.enemy import Enemy
 
 entities = []
@@ -30,10 +31,10 @@ entities.append(player.entity)
 
 pygame.joystick.init()
 pygame.display.init()
-# Wait until we have joystick
+	# Wait until we have joystick
 while not pygame.joystick.get_count():
-		print "No joystick detected!"
-		time.sleep(5)
+	print "No joystick detected!"
+	time.sleep(5)
 
 joystick = pygame.joystick.Joystick(0)
 joystick.init()
@@ -42,24 +43,24 @@ joystick.init()
 # define our game loops
 
 def draw_thread(dacs, distortions, queues):
-		while True:
-				try:
-						frame = LogicalFrame()
-						tmpEnt = entities[:]
-						for e in tmpEnt:
-								frame.add(e)
+	while True:
+		try:
+			frame = LogicalFrame()
+			tmpEnt = entities[:]
+			for e in tmpEnt:
+				frame.add(e)
 
-						set_frame(frame, distortions, queues)
-						time.sleep(1 / 60.0)
+			set_frame(frame, distortions, queues)
+			time.sleep(1/60.0)
 
-				except Exception as e:
-						import sys, traceback
+		except Exception as e:
+			import sys, traceback
+			print '\n---------------------'
+			print 'Exception: %s' % e
+			print '- - - - - - - - - - -'
+			traceback.print_tb(sys.exc_info()[2])
+			print "\n"
 
-						print '\n---------------------'
-						print 'Exception: %s' % e
-						print '- - - - - - - - - - -'
-						traceback.print_tb(sys.exc_info()[2])
-						print "\n"
 
 
 """
