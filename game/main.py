@@ -13,18 +13,10 @@ from entities.circle import Circle
 from entities.square import Square
 from entities.note1 import Note1
 from entities.arrow import Arrow
-from entities.line import Line
 from entities.letterx import LetterX
 from entities.triangle import Triangle
 
 entities = []
-
-for i in xrange(-2,3):
-	tmpLine = Line()
-	tmpLine.y = 3000 * i
-	tmpLine.x = 10000
-	tmpLine.laserKey = 'usa'
-	entities.append(tmpLine)
 
 # TRIFORCE
 triforce = {
@@ -50,6 +42,8 @@ for key in triforce:
 	triforce[key].x = initialLoc[key].x
 	triforce[key].y = initialLoc[key].y
 	triforce[key].percent = 0.0
+	triforce[key].percentInc = 0.04
+	triforce[key].percentIncStep = -0.0005
 	triforce[key].tempRotX = 0
 	triforce[key].tempRotY = 0
 	triforce[key].tempRotZ = 0
@@ -93,38 +87,11 @@ def create_game_threads(dacs, distortions, queues):
 PERIOD = 2*math.pi
 
 def update(delta_t):
-	percent = min(triforce['power'].percent + 0.03, 1.0)
+	inc = max(triforce['power'].percentInc + triforce['power'].percentIncStep,
+				0.002)
+	triforce['power'].percentInc = inc
+	percent = min(triforce['power'].percent + inc, 1.0)
 	triforce['power'].percent = percent
-
-	"""
-	player.tempRotX += 0.1
-	if player.tempRotX > PERIOD:
-		player.tempRotX = 0
-
-	player.tempRotY += 0.07
-	if player.tempRotY > PERIOD:
-		player.tempRotY = 0
-
-	player.tempRotZ += 0.09
-	if player.tempRotZ > PERIOD:
-		player.tempRotZ = 0
-
-	#move the player
-	player.rotateZ += 0.1
-	player.rotateX += 0.00001
-
-	player.initMatStack()
-	#player.pushRotateZ(player.tempRotZ)
-	#player.pushRotateX(math.pi/140)
-	player.pushRotateY(player.tempRotY)
-	#player.pushRotateX(player.tempRotX)
-	player.doneMatStack()
-	power.tempRotY += 0.1
-	power.rotateZ += 0.1
-	power.initMatStack()
-	power.pushRotateY(power.tempRotY)
-	power.doneMatStack()
-	"""
 
 	for key in ['power', 'courage', 'wisdom']:
 		dLoc = finalLoc[key] - initialLoc['power']
@@ -136,8 +103,14 @@ def update(delta_t):
 		triforce[key].rotateZ = PERIOD * percent
 
 		triforce[key].initMatStack()
-		triforce[key].pushRotateX(PERIOD * percent)
+		if key in ['power']:
+			triforce[key].pushRotateX(2*PERIOD * percent)
+			#triforce[key].pushRotateY(-2*PERIOD * percent)
+		if key in ['courage']:
+			triforce[key].pushRotateX(2*PERIOD * percent)
+			#triforce[key].pushRotateY(-2*PERIOD * percent)
+		if key in ['wisdom']:
+			triforce[key].pushRotateX(2*PERIOD * percent)
+			#triforce[key].pushRotateY(2*PERIOD * percent)
 		triforce[key].doneMatStack()
-
-
 
