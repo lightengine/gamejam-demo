@@ -34,8 +34,14 @@ dacs['china'] = None
 dacs['usa']	  = None
 
 distortions = {}
-distortions['china'] = Distortion(5000, -6600, 0.75, 0.75)
-distortions['usa'] = Distortion(-5000, 6600)
+distortions['china'] = Distortion(5000, -6600, 0.75, 0.75,
+		blankingSamplePts=15,
+		trackingSamplePts=10
+)
+distortions['usa'] = Distortion(-5000, 6600,
+		blankingSamplePts=30,
+		trackingSamplePts=30
+)
 
 frame = LogicalFrame()
 
@@ -56,13 +62,15 @@ def dac_thread(key, queues):
 			sys.exit()
 
 		except Exception as e:
+			"""
 			import sys, traceback
 			print '\n---------------------'
 			print 'Exception: %s' % e
 			print '- - - - - - - - - - -'
 			traceback.print_tb(sys.exc_info()[2])
 			print "\n"
-			#continue
+			"""
+			continue
 
 create_game_threads(dacs, distortions, queues)
 
