@@ -56,15 +56,13 @@ def dac_thread(key, queues):
 			sys.exit()
 
 		except Exception as e:
-			"""
 			import sys, traceback
 			print '\n---------------------'
 			print 'Exception: %s' % e
 			print '- - - - - - - - - - -'
 			traceback.print_tb(sys.exc_info()[2])
 			print "\n"
-			"""
-			continue
+			#continue
 
 create_game_threads(dacs, distortions, queues)
 
