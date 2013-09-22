@@ -198,12 +198,13 @@ def destroy_thread(entity):
 
 	while animationCounter>0:
 		delta_t = datetime.now() - last_time
-		entity.scale += 0.01
-		entity.rotateX += random.randint(0,5) * 0.01
-		entity.rotateZ += random.randint(0,5) * 0.01
-		entity.rotateY += random.randint(0,5) * 0.01
+		entity.scale += 0.1
+		entity.rotateX += random.randint(0,5) * 0.1
+		entity.rotateZ += random.randint(0,5) * 0.1
+		entity.rotateY += random.randint(0,5) * 0.1
 		animationCounter -= delta_t.microseconds
 		last_time = datetime.now()
+		time.sleep(1/30.0)
 	entities.remove(entity)
 
 def create_game_threads(dacs, distortions, queues):
