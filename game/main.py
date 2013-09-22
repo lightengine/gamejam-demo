@@ -4,7 +4,7 @@ import itertools
 import sys
 import thread
 
-from datetime import *
+from datetime import datetime
 
 
 from lib.frame import LogicalFrame
@@ -13,6 +13,12 @@ from entities.circle import Circle
 from entities.square import Square
 
 from set_frame import set_frame
+
+entities = []
+
+player = Circle()
+
+entities.append(player)
 
 # define our game loops
 def draw_thread(dacs, distortions):
@@ -46,14 +52,6 @@ def create_game_threads(dacs, distortions):
 	thread.start_new_thread(update_thread,())
 
 # FOR THE LOVE OF GOD LOOK AWAY THIS CODE IS HIDIOUS!
-
-entities = []
-
-player = Circle()
-square = Square()
-
-entities.append(player)
-entities.append(square)
 
 def update(delta_t):
 	#move the player
