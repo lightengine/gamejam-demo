@@ -29,5 +29,5 @@ function print_status() {
 
 print_status 'Execute'
 ssh -o "StrictHostKeyChecking no" $USER@$HOST << ENDHERE
-	killall python && $DIR_ROOT/circle.py
+	$DIR_ROOT/main.py
 ENDHERE
