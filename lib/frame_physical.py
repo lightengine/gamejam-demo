@@ -9,10 +9,10 @@ from entity_gfx import GfxEntity
 
 
 TRACKING_SAMPLE_PTS = 10
-TRACKING_DISPLAY = True
+TRACKING_DISPLAY = False
 
 BLANKING_SAMPLE_PTS = 10
-BLANKING_DISPLAY = True
+BLANKING_DISPLAY = False
 
 class PhysicalFrame(object):
 	def __init__(self):
