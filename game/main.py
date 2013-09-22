@@ -15,10 +15,10 @@ from entities.square import Square
 from entities.note1 import Note1
 from entities.arrow import Arrow
 from entities.line import Line
-from entities.letterx import LetterX
+from entities.cross import Cross
 
 entities = []
-player = LetterX()
+player = Cross()
 player.rotateZ = 0.75
 
 player.laserKey = 'usa'
