@@ -18,19 +18,9 @@ from entities.line import Line
 from entities.letterx import LetterX
 
 entities = []
-"""
-for i in xrange(-2,3):
-	tmpLine = Line()
-	tmpLine.y = 3000 * i
-	tmpLine.x = 21000
-	tmpLine.laserKey = 'usa'
-	entities.append(tmpLine)
-"""
 player = LetterX()
 
 player.laserKey = 'usa'
-player.scale = 10
-player.rotation = .5
 entities.append(player)
 
 pygame.joystick.init()
@@ -187,7 +177,7 @@ def update_thread():
 
 		for bullet in bulletDeleteList:
 			bullets.remove(bullet)
-			thread.start_new_thread(destroy_thread, (bullet,))
+			entities.remove(bullet)
 
 		last_time = datetime.now()
 		time.sleep(1/100.0)
@@ -201,8 +191,8 @@ def destroy_thread(entity):
 		entity.scale += 0.1
 		entity.rotateZ += random.randint(0,5) * 0.1
 		entity.initMatStack()
-		entity.pushRotateX(2*math.pi * entity.scale*-0.01)
-		entity.pushRotateY(2*math.pi * entity.scale*0.02)
+		entity.pushRotateX(2*math.pi * entity.scale*-0.05)
+		entity.pushRotateY(2*math.pi * entity.scale*0.1)
 		entity.doneMatStack()
 		animationCounter -= delta_t.microseconds
 		last_time = datetime.now()
