@@ -202,6 +202,7 @@ def update_thread():
 				#create bullets
 				timeSinceShot -= delta_t.microseconds
 				if joystick.get_button(11) and timeSinceShot < 0:
+						random.choice(SOUND.LASERS).play()
 						bullet = Line()
 						bullet.laserKey = 'usa'
 						bullet.type = player.type

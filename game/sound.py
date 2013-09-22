@@ -37,4 +37,9 @@ class SOUND:
 	#BEEP = Sound('beep.mp3')
 	#ZIPPO = Sound('zippo-open-1.wav')
 	MOTHER = Sound('mother_talk.wav')
+	LASERS = [
+		Sound('laser1.wav'),
+		Sound('laser2.wav'),
+		Sound('laser3.wav'),
+	]
 
