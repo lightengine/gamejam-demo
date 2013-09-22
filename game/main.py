@@ -199,9 +199,11 @@ def destroy_thread(entity):
 	while animationCounter>0:
 		delta_t = datetime.now() - last_time
 		entity.scale += 0.1
-		entity.rotateX += random.randint(0,5) * 0.1
 		entity.rotateZ += random.randint(0,5) * 0.1
-		entity.rotateY += random.randint(0,5) * 0.1
+		entity.initMatStack()
+		entity.pushRotateX(2*math.pi * entity.scale*-0.01)
+		entity.pushRotateY(2*math.pi * entity.scale*0.02)
+		entity.doneMatStack()
 		animationCounter -= delta_t.microseconds
 		last_time = datetime.now()
 		time.sleep(1/30.0)

@@ -35,24 +35,6 @@ class GfxEntity(object):
 
 		self.isNormalized = True
 
-		"""
-		rotX = 1.0
-		rotY = 1.0
-		if len(self.fMatStack) > 0:
-			m = None
-			for mat in self.fMatStack:
-				if m is None:
-					m = mat
-					continue
-				m *= mat
-
-			vec = numpy.matrix([[1], [1], [1]])
-			ret = m * vec
-			rotX = ret[0,0]
-			rotY = ret[1,0]
-		"""
-
-
 		# Scale, Rotate, Translate
 		for i in range(len(self.points)):
 			x = self.points[i].x
