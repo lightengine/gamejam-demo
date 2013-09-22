@@ -19,6 +19,7 @@ from entities.letterx import LetterX
 
 entities = []
 player = LetterX()
+player.rotateZ = 0.75
 
 player.laserKey = 'usa'
 entities.append(player)
