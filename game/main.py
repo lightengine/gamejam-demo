@@ -13,7 +13,7 @@ from entities.square import Square
 from set_frame import set_frame
 
 entities = []
-for i in range(10):
+for i in range(40):
 	entities.append(Circle())
 
 for i in range(len(entities)):
@@ -52,8 +52,7 @@ def update_thread(dacs, distortions, queues):
 
 				frame.add(e)
 
-			print 'update thread ended... set_frame() now'
-			set_frame(frame, dacs, distortions, queues)
+			set_frame(frame, distortions, queues)
 			time.sleep(0.05)
 
 		except Exception as e:
@@ -68,6 +67,5 @@ def game_thread(dacs, distortions):
 	pass
 
 def create_game_threads(dacs, distortions, queues):
-	print 'creating game threads...'
 	thread.start_new_thread(update_thread, (dacs, distortions, queues))
 
