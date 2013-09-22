@@ -18,6 +18,7 @@ from entities.line import Line
 from entities.letterx import LetterX
 from game.player import Player
 from entities.triangle import Triangle
+from entities.cross import Cross
 
 entities = []
 
@@ -229,13 +230,33 @@ def destroy_thread(entity):
 	animationCounter = 500000
 	last_time = datetime.now()
 
+	if not hasattr(entity, 'xRotInc'):
+		# Must maintain rotation state
+		entity.xRotState = 0.0
+		entity.yRotState = 0.0
+
+		# Random, unique rotations
+		sign = 1 if random.randint(0, 1) else -1
+		entity.xRotInc = sign * random.uniform(0.001, 1.2)
+		sign = 1 if random.randint(0, 1) else -1
+		entity.yRotInc = sign * random.uniform(0.001, 1.2)
+		sign = 1 if random.randint(0, 1) else -1
+		entity.zRotInc = sign * random.uniform(0.001, 1.2)
+		entity.scaleInc = random.uniform(0.2, 0.5)
+
+		time.sleep(1/30.0)
+
 	while animationCounter>0:
 		delta_t = datetime.now() - last_time
-		entity.scale += 0.5
-		entity.rotateZ += random.randint(0,5) * 0.1
+		entity.scale += entity.scaleInc
+		entity.rotateZ += entity.zRotInc
+
+		entity.xRotState += entity.xRotInc
+		entity.yRotState += entity.yRotInc
+
 		entity.initMatStack()
-		entity.pushRotateX(2*math.pi * entity.scale*-0.1)
-		entity.pushRotateY(2*math.pi * entity.scale*0.1)
+		entity.pushRotateX(entity.xRotState)
+		entity.pushRotateY(entity.yRotState)
 		entity.doneMatStack()
 		animationCounter -= delta_t.microseconds
 		last_time = datetime.now()
