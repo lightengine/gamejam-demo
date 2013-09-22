@@ -87,6 +87,7 @@ def draw_thread(dacs, distortions, queues):
 """
 
 class GAME:
+	hasDied = False
 	difficulty = 1
 	timeSinceMove = 0
 	timeSinceShot = 0
@@ -94,6 +95,7 @@ class GAME:
 	player = None
 	enemies, bullets = ([], [])
 	changeGameState = 0
+
 # FOR THE LOVE OF GOD LOOK AWAY THIS CODE IS HIDIOUS!
 def update_thread():
 	last_time = datetime.now()
@@ -134,9 +136,9 @@ def game_loop(delta_t, init=False):
 		GAME.player.type = 2
 		GAME.player.entity.laserKey = 'usa'
 		entities.append(GAME.player.entity)
+		SOUND.TECHNO.playLoop()
 
 	GAME.difficulty += delta_t.microseconds / 6000000.0
-	print(GAME.difficulty)
 	if joystick.get_button(12):
 			if GAME.player.type != 0:
 					tmp = Triangle()
@@ -230,6 +232,7 @@ def game_loop(delta_t, init=False):
 				enemyDeleteList.append(enemy)
 			elif abs(enemy.entity.x - GAME.player.entity.x) < 1000 and GAME.player.type == enemy.type and GAME.player.entity.y == enemy.entity.y:
 				#YOU LOOSE, YOU GET NOTHING! YOU ATE THE FIZZY LIFTING DRINK VOIDING THE CONTRACT THERFOR YOU GET NOTHING!
+				GAME.hasDied = True
 				GAME.changeGameState = 0
 				entities.remove(GAME.player.entity)
 				for enemy in GAME.enemies:
@@ -300,7 +303,12 @@ finalLoc = {
 PERIOD = 2*math.pi
 def triforce_loop(delta_t, init=False):
 	if init:
-		SOUND.ZELDA.play()
+		SOUND.TECHNO.stop()
+		if not GAME.hasDied:
+			SOUND.ZELDA.play()
+		else:
+			SOUND.MARIO_DIE.play()
+
 		for key in triforce:
 			triforce[key].laserKey = 'china'
 			triforce[key].x = initialLoc[key].x

@@ -36,6 +36,10 @@ class Sound(object):
 		pygame.event.pump()
 		channel = self.sound.play(loops=-1)
 
+	def stop(self):
+		pygame.event.pump()
+		self.sound.stop()
+
 class SOUND:
 	#TROLOLO = Sound('trololo1.wav')
 	#BEEP = Sound('beep.mp3')
@@ -43,6 +47,7 @@ class SOUND:
 	ZELDA = Sound('zelda_oot_item.wav')
 	MOTHER = Sound('mother_talk.wav')
 	TECHNO = Sound('techno1.wav')
+	MARIO_DIE = Sound('smb_mariodie.wav')
 	LASERS = [
 		Sound('laser1.wav'),
 		Sound('laser2.wav'),
