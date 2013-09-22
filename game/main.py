@@ -228,7 +228,7 @@ def game_loop(delta_t, init=False):
 			if enemy.entity.x > 20000:
 				enemy.entity.no_animation = True
 				enemyDeleteList.append(enemy)
-			elif abs(enemy.entity.x - GAME.player.entity.x) < 1000 and GAME.player.type == enemy.type:
+			elif abs(enemy.entity.x - GAME.player.entity.x) < 1000 and GAME.player.type == enemy.type and GAME.player.entity.y == enemy.y:
 				#YOU LOOSE, YOU GET NOTHING! YOU ATE THE FIZZY LIFTING DRINK VOIDING THE CONTRACT THERFOR YOU GET NOTHING!
 				GAME.changeGameState = 0
 				entities.remove(GAME.player.entity)
