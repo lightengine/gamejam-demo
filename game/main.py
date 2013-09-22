@@ -241,6 +241,7 @@ def game_loop(delta_t, init=False):
 	#create bullets
 	GAME.timeSinceShot -= delta_t.microseconds
 	if joystick.get_button(11) and GAME.timeSinceShot < 0:
+			random.choice(SOUND.LASERS).play()
 			bullet = Line()
 			bullet.laserKey = 'usa'
 			bullet.type = GAME.player.type
@@ -299,6 +300,7 @@ finalLoc = {
 PERIOD = 2*math.pi
 def triforce_loop(delta_t, init=False):
 	if init:
+		SOUND.ZELDA.play()
 		for key in triforce:
 			triforce[key].laserKey = 'china'
 			triforce[key].x = initialLoc[key].x
@@ -348,6 +350,11 @@ def destroy_thread(entity):
 		if not hasattr(entity, 'no_animation'):
 			animationCounter = 500000
 			last_time = datetime.now()
+			if random.randint(0, 20) == 0:
+				SOUND.MOTHER.play()
+			else:
+				sound = random.choice(SOUND.PIANOS)
+				sound.play()
 
 			SOUND.MOTHER.play()
 			if not hasattr(entity, 'xRotInc'):
