@@ -16,6 +16,8 @@ class GfxEntity(object):
 		self._matTransformX = entity._matTransformX
 		self._matTransformY = entity._matTransformY
 
+		self.eid = entity.eid
+
 		# Copy the entity's points
 		for point in entity.points:
 			self.points.append(point.copy())
