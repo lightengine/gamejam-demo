@@ -13,6 +13,8 @@ import sys
 import threading
 import time
 
+from multiprocessing import Process, Queue
+
 class PointStream(object):
 	def __init__(self):
 		self.called = False
@@ -26,14 +28,25 @@ class PointStream(object):
 		self.laserKey = None
 		self.distortion = None
 
-	def setNextFrame(self, frame):
-		self.nextFrame = frame.getPhysical(self.laserKey, self.distortion)
+		self.queue = None
+
+	def setQueue(self, queue):
+		self.queue = queue
+
+	def getNextFrame(self):
+		try:
+			physFrame = self.queue.get(block=False)
+			if physFrame:
+				self.nextFrame = physFrame
+		except:
+			pass
 
 	def read(self, n):
 		"""
 		Return the next 'n' points that the laser projector wants.
 		This is how DAC.py interfaces with us.
 		"""
+		#print 'stream.read( %s )' % self.laserKey
 		return [self.stream.next() for i in xrange(n)]
 
 	def produce(self):
@@ -43,14 +56,19 @@ class PointStream(object):
 		well as the "tracking" and "blanking" points
 		that must occur between object draws.
 		"""
+		#print 'producex'
 		while True:
 			try:
+				#print 'produce...trygetnextframe'
+				self.getNextFrame()
+				#print 'produce...gotnextframe'
 				if self.nextFrame:
 					self.frame = self.nextFrame
 
 				frame = self.frame
 
 				if not frame:
+					#print 'noframe'
 					yield (0, 0, 0, 0, 0)
 					continue
 

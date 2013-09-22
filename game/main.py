@@ -3,17 +3,15 @@ import math
 import itertools
 import sys
 import thread
-
+import random
 from datetime import datetime
-
-
 from lib.frame import LogicalFrame
+from lib.set_frame import set_frame
 
 from entities.circle import Circle
 from entities.square import Square
 from entities.line import Line
 
-from set_frame import set_frame
 
 entities = []
 
@@ -31,14 +29,16 @@ player.rotation = .5
 entities.append(player)
 
 # define our game loops
-def draw_thread(dacs, distortions):
+
+def draw_thread(dacs, distortions, queues):
 	while True:
 		try:
 			frame = LogicalFrame()
 			for e in entities:
 				frame.add(e)
 
-			set_frame(frame, dacs, distortions)
+			set_frame(frame, distortions, queues)
+			time.sleep(0.05)
 
 		except Exception as e:
 			import sys, traceback
@@ -59,8 +59,8 @@ def update_thread():
 			time.sleep(1/30);
 
 
-def create_game_threads(dacs, distortions):
-	thread.start_new_thread(draw_thread, (dacs, distortions))
+def create_game_threads(dacs, distortions, queues):
+	thread.start_new_thread(draw_thread, (dacs, distortions, queues))
 	thread.start_new_thread(update_thread,())
 
 # FOR THE LOVE OF GOD LOOK AWAY THIS CODE IS HIDIOUS!
