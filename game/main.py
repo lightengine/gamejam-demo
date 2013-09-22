@@ -7,6 +7,7 @@ import random
 from datetime import datetime
 from lib.frame import LogicalFrame
 from lib.set_frame import set_frame
+from lib.position import Position
 
 from entities.circle import Circle
 from entities.square import Square
@@ -25,16 +26,34 @@ for i in xrange(-2,3):
 	tmpLine.laserKey = 'usa'
 	entities.append(tmpLine)
 
-player = Triangle()
-player.tempRotX = 0.0
-player.tempRotY = 0.0
-player.tempRotZ = 0.0
+# TRIFORCE
+triforce = {
+	'power': Triangle(),
+	'courage': Triangle(),
+	'wisdom': Triangle(),
+}
 
+initialLoc= {
+	'power': Position(0, 15000),
+	'courage': Position(-15000, 0),
+	'wisdom': Position(15000, 0),
+}
 
-player.laserKey = 'china'
-player.scale = 2
-player.rotation = .5
-entities.append(player)
+finalLoc = {
+	'power': Position(0, 3800),
+	'courage': Position(-2200, 0),
+	'wisdom': Position(2200, 0),
+}
+
+for key in triforce:
+	triforce[key].laserKey = 'china'
+	triforce[key].x = initialLoc[key].x
+	triforce[key].y = initialLoc[key].y
+	triforce[key].percent = 0.0
+	triforce[key].tempRotX = 0
+	triforce[key].tempRotY = 0
+	triforce[key].tempRotZ = 0
+	entities.append(triforce[key])
 
 # define our game loops
 
@@ -74,6 +93,10 @@ def create_game_threads(dacs, distortions, queues):
 PERIOD = 2*math.pi
 
 def update(delta_t):
+	percent = min(triforce['power'].percent + 0.03, 1.0)
+	triforce['power'].percent = percent
+
+	"""
 	player.tempRotX += 0.1
 	if player.tempRotX > PERIOD:
 		player.tempRotX = 0
@@ -96,4 +119,25 @@ def update(delta_t):
 	player.pushRotateY(player.tempRotY)
 	#player.pushRotateX(player.tempRotX)
 	player.doneMatStack()
+	power.tempRotY += 0.1
+	power.rotateZ += 0.1
+	power.initMatStack()
+	power.pushRotateY(power.tempRotY)
+	power.doneMatStack()
+	"""
+
+	for key in ['power', 'courage', 'wisdom']:
+		dLoc = finalLoc[key] - initialLoc['power']
+		pLoc = initialLoc[key].percentTo(finalLoc[key],
+											triforce['power'].percent)
+
+		triforce[key].x = pLoc.x
+		triforce[key].y = pLoc.y
+		triforce[key].rotateZ = PERIOD * percent
+
+		triforce[key].initMatStack()
+		triforce[key].pushRotateX(PERIOD * percent)
+		triforce[key].doneMatStack()
+
+
 

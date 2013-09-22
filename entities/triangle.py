@@ -513,6 +513,22 @@ class Triangle(Entity):
 			{'x': 49.699989318847656, 'y': 0.5196166634559631},
 		]
 
+
+		# Wasn't centered. Center it.
+		xSum = 0
+		ySum = 0
+		count = 0
 		for pt in points:
-			self.points.append(Point(pt['x']*40, pt['y']*40))
+			xSum += pt['x']
+			ySum += pt['y']
+			count += 1
+
+		xAvg = xSum/count
+		yAvg = ySum/count
+
+		for i in xrange(len(points)):
+			if i % 4 != 0:
+				continue
+			pt = points[i]
+			self.points.append(Point((pt['x']-xAvg)*40, (pt['y']-yAvg)*-40))
 
