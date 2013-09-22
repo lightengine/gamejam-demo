@@ -3,6 +3,7 @@ import math
 import itertools
 import sys
 import thread
+import random
 
 from lib.frame import LogicalFrame
 
@@ -12,18 +13,18 @@ from entities.square import Square
 from set_frame import set_frame
 
 entities = []
-entities.append(Circle())
-entities.append(Circle())
-entities.append(Circle())
-entities.append(Circle())
+for i in range(5):
+	entities.append(Circle())
 
 for i in range(len(entities)):
 	entity = entities[i]
 	entity.laserKey = 'china' if i%2 == 0 else 'usa'
 	#entity.x = random.randint(-5000, 5000)
 	#entity.y = random.randint(-5000, 5000)
-	entity.x = 0
-	entity.y = 0
+	entity.x = 2000*i
+	entity.y = 2000*i
+	entity.xVel = 100 if random.randint(0, 1) else -100
+	entity.yVel = 100 if random.randint(0, 1) else -100
 
 # define our game loops
 
@@ -34,13 +35,20 @@ def update_thread(dacs, distortions):
 
 			# "Game movement", or whatever
 			for e in entities:
-				e.x += (10 * e.direc)
-				if e.x > 500:
-					e.x = 500
-					e.direc = -1
-				elif e.x < -500:
-					e.x = -500
-					e.direc = 1
+				e.x += e.xVel
+				e.y += e.yVel
+				if e.x > 10000:
+					e.x = 10000
+					e.xVel = random.randint(50, 100) * -1
+				elif e.x < -10000:
+					e.x = -10000
+					e.xVel = random.randint(50, 100)
+				if e.y > 10000:
+					e.y = 10000
+					e.yVel = random.randint(50, 100) * -1
+				elif e.y < -10000:
+					e.y = -10000
+					e.yVel = random.randint(50, 100)
 
 				frame.add(e)
 

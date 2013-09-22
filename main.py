@@ -58,7 +58,7 @@ def dac_thread(key):
 			"""
 			continue
 
-#thread.start_new_thread(dac_thread, ('china',))
+thread.start_new_thread(dac_thread, ('china',))
 thread.start_new_thread(dac_thread, ('usa',))
 
 create_game_threads(dacs, distortions)
