@@ -13,7 +13,7 @@ from entities.square import Square
 from set_frame import set_frame
 
 entities = []
-for i in range(5):
+for i in range(10):
 	entities.append(Circle())
 
 for i in range(len(entities)):
@@ -28,7 +28,7 @@ for i in range(len(entities)):
 
 # define our game loops
 
-def update_thread(dacs, distortions):
+def update_thread(dacs, distortions, queues):
 	while True:
 		try:
 			frame = LogicalFrame()
@@ -39,20 +39,22 @@ def update_thread(dacs, distortions):
 				e.y += e.yVel
 				if e.x > 10000:
 					e.x = 10000
-					e.xVel = random.randint(50, 100) * -1
+					e.xVel = random.randint(50, 1000) * -1
 				elif e.x < -10000:
 					e.x = -10000
-					e.xVel = random.randint(50, 100)
+					e.xVel = random.randint(50, 1000)
 				if e.y > 10000:
 					e.y = 10000
-					e.yVel = random.randint(50, 100) * -1
+					e.yVel = random.randint(50, 1000) * -1
 				elif e.y < -10000:
 					e.y = -10000
-					e.yVel = random.randint(50, 100)
+					e.yVel = random.randint(50, 1000)
 
 				frame.add(e)
 
-			set_frame(frame, dacs, distortions)
+			print 'update thread ended... set_frame() now'
+			set_frame(frame, dacs, distortions, queues)
+			time.sleep(0.05)
 
 		except Exception as e:
 			import sys, traceback
@@ -65,6 +67,7 @@ def update_thread(dacs, distortions):
 def game_thread(dacs, distortions):
 	pass
 
-def create_game_threads(dacs, distortions):
-	thread.start_new_thread(update_thread, (dacs, distortions))
+def create_game_threads(dacs, distortions, queues):
+	print 'creating game threads...'
+	thread.start_new_thread(update_thread, (dacs, distortions, queues))
 
