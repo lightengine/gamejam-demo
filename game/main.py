@@ -17,6 +17,8 @@ from entities.arrow import Arrow
 from entities.line import Line
 from entities.cross import Cross
 
+from sound import *
+
 entities = []
 player = Cross()
 player.rotateZ = 0.75
@@ -185,6 +187,7 @@ def destroy_thread(entity):
 	animationCounter = 500000
 	last_time = datetime.now()
 
+	SOUND.MOTHER.play()
 	if not hasattr(entity, 'xRotInc'):
 		# Must maintain rotation state
 		entity.xRotState = 0.0
